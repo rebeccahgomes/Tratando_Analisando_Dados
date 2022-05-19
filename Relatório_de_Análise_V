@@ -1,0 +1,41 @@
+# Tratamento de Dados Faltantes
+
+import pandas as pd
+dados = pd.read_csv('aluguel_residencial.csv', sep = ';')
+dados.head(10)
+
+#Se a informação for nula, na matriz booleana aparece como True
+dados.isnull()
+
+#Se a informação for nula, na matriz booleana aparece como False
+dados.notnull()
+
+dados.info()
+
+# passa para o df apenas as linhas em que o Valor é null
+dados[dados['Valor'].isnull()]
+
+A = dados.shape[0]
+dados.dropna(subset = ['Valor'], inplace = True)
+B = dados.shape[0]
+A - B
+
+# visualizar quantos condomínios tem valores null
+dados[dados['Condominio'].isnull()].shape[0]
+
+# seleção de imóveis do tipo apartamento com condominio nulo
+selecao= (dados['Tipo'] == 'Apartamento') & (dados['Condominio'].isnull())
+
+A = dados.shape[0]
+dados = dados[~selecao]
+B = dados.shape[0]
+A - B
+dados[dados['Condominio'].isnull()].shape[0]
+
+#atribuir valor 0 para os valores de IPTU null
+dados = dados.fillna({'Condominio' : 0, 'IPTU' : 0})
+dados[dados['Condominio'].isnull()].shape[0]
+dados[dados['IPTU'].isnull()].shape[0]
+dados.info()
+
+dados.to_csv('aluguel_residencial.csv', sep = ';', index = False)
