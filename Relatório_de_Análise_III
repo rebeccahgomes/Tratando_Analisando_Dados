@@ -1,0 +1,36 @@
+# Imóveis Residenciais
+
+import pandas as pd
+
+dados = pd.read_csv('dados/aluguel.csv', sep = ';')
+dados.head(10)
+
+list(dados['Tipo'].drop_duplicates())
+residencial = ['Quitinete',
+ 'Casa',
+ 'Apartamento',
+ 'Casa de Condomínio',
+ 'Casa de Vila']
+ residencial
+ dados.head(10)
+ 
+ selecao = dados['Tipo'].isin(residencial)
+selecao
+
+dados_residencial = dados[selecao]
+dados_residencial
+
+list(dados_residencial['Tipo'].drop_duplicates())
+dados_residencial.shape[0]
+dados.shape[0]
+dados_residencial.index = range(dados_residencial.shape[0])
+dados_residencial
+
+# Exportando a base de dados
+
+dados_residencial.to_csv('dados/aluguel_residencial.csv', sep = ';')
+dados_residencial_2 = pd.read_csv('dados/aluguel_residencial.csv', sep = ';')
+dados_residencial_2
+dados_residencial.to_csv('dados/aluguel_residencial.csv', sep = ';', index = False)
+dados_residencial_2 = pd.read_csv('dados/aluguel_residencial.csv', sep = ';')
+dados_residencial_2
