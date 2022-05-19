@@ -1,0 +1,36 @@
+# Criando agrupamentos
+
+import pandas as pd
+
+dados = pd.read_csv('aluguel_residencial.csv', sep = ';')
+dados.head(10)
+
+dados['Valor'].mean()
+
+bairros = ['Barra da Tijuca', 'Copacabana', 'Ipanema', 'Leblon', 'Botafogo', 'Flamengo', 'Tijuca']
+selecao = dados['Bairro'].isin(bairros)
+dados = dados[selecao]
+dados['Bairro'].drop_duplicates()
+grupo_bairro = dados.groupby('Bairro')
+type(grupo_bairro)
+grupo_bairro.groups
+
+for bairro, dados in grupo_bairro:
+    print(bairro)
+for bairro, data in grupo_bairro:
+    print('{} -> {}'.format(bairro, data.Valor.mean()))
+grupo_bairro.Valor.mean()
+grupo_bairro[['Valor', 'Condominio']].mean().round(2)
+
+# Estatísticas Descritivas
+
+grupo_bairro['Valor'].describe().round(2)
+grupo_bairro['Valor'].aggregate(['min', 'max']).rename(columns = {'min': 'Mínimo', 'max': 'Máximo'})
+
+%matplotlib inline
+import matplotlib.pyplot as plt
+plt.rc('figure', figsize = (20,10))
+
+fig = grupo_bairro['Valor'].max().plot.bar(color = 'blue')
+fig.set_ylabel('Valor do Aluguel')
+fig.set_title('Valor Médio do Aluguel por Bairro', {'fontsize': 22})
